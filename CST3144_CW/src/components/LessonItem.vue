@@ -1,5 +1,4 @@
 <script setup>
-    import {ref} from 'vue'
     const emit = defineEmits(['addToBasket'])
     const props = defineProps(['item','index'])
     function addToBasket(item){
