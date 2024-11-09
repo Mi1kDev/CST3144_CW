@@ -83,6 +83,7 @@ export default class DataManager{
             },
             
           ]
+        this.basket = {}
     }
     getKeys = () =>{
         if(this.productList.length > 0){
@@ -131,5 +132,13 @@ export default class DataManager{
             this.sortByNumber(value, isAsc)
         }
         return this.productList
+    }
+    addToBasket(item){
+      if(item.name in this.basket){
+        this.basket[item.name].qty += 1
+        return this.basket
+      }
+      this.basket[item.name] = {qty: 1, price: item.cost, name: item.name}
+      return this.basket
     }
 }
