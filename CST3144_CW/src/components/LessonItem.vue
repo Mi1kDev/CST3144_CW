@@ -21,13 +21,17 @@
 </script>
 
 <template>
-    <div class="lessonItem">
-        <img class="limitImg" v-if="isImage()" :src="item.imageURL" :alt="item.name">
-        <h3>{{ item.name }}</h3>
-        <p>{{ item.description }}</p>
-        <p>Location: {{ item.location }}</p>
-        <p>Price: {{ item.cost }}</p>
-        <p>Slots: {{ item.availableSlots }}</p>
-        <button @click="addToBasket(item)" :disabled="isDisabled()">Add to Basket</button>
+    <div class="lessonItem bg-light text-dark rounded">
+        <div class="col-12 lessonContent">
+            <img class="limitImg" v-if="isImage()" :src="item.imageURL" :alt="item.name">
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.description }}</p>
+            <p>Location: {{ item.location }}</p>
+            <p>Price: {{ item.cost }}</p>
+            <p>Slots: {{ item.availableSlots }}</p>
+        </div>
+        <div class="col-12 d-flex flex-column justify-content-center">
+            <button class="btn btn-dark text-center"@click="addToBasket(item)" :disabled="isDisabled()">Add to Basket</button>
+        </div>
     </div>
 </template>

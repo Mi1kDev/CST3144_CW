@@ -1,11 +1,19 @@
-@import './base.css';
+.lessonGrid{
+  grid-gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  height: 100vh;
 
+}
 .lessonItem{
-  max-width: max-content;
-  border-radius: 10px;
-  background-color: orangered;
-  margin-bottom: 0.9vh;
+  display: inline-block;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+}
+.lessonContent{
+  height: 85%;
+  max-height: 85%;
 }
 .limitImg{
-  max-width: 100px;
+  max-height: 50px;
 }

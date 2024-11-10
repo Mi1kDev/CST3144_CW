@@ -3,6 +3,8 @@
   import LessonItem from './components/LessonItem.vue'; 
   import DataManager from './classes/dataManager';
   import BasketPage from './components/BasketPage.vue';
+  import Search from './components/Search.vue';
+  import Sort from './components/Sort.vue'
 
   let sortedList = ref([])
   const ascending = ref(true)
@@ -23,6 +25,10 @@
     }
   }
 
+  function hasBasket(){
+    return Object.keys(dataManager.basket).length <= 0
+  }
+
   function setAscending(value){
     if(ascending.value === value){
       return
@@ -33,8 +39,6 @@
   function swap(){
     pageState.value.isCheckout = !pageState.value.isCheckout
     pageState.value.isHomePage = !pageState.value.isHomePage
-
-    console.log(pageState.value)
   }
 
   watch([ascending, sortVal], ([newValX, newValY], [oldValX, oldValY])=>{ 
@@ -53,26 +57,26 @@
     :basket="basket"
     :pageState="pageState"
   />
-  <div v-if="pageState.isHomePage">
-    <div>
-      <button @click="setAscending(true)">Ascending</button>
-      <button @click="setAscending(false)">Descending</button>
+  <div v-if="pageState.isHomePage" class="container bg-dark text-light">
+    <div class="row">
+      <div class="col-12 d-flex flex-column justify-content-center">
+        <Search/>
+        <Sort
+          @setIsAsc="setAscending"
+          v-model:sortVal="sortVal"
+        />
+        <div class="lessonGrid mt-3 mx-4">
+          <LessonItem
+            v-for="(item, index) in sortedList"
+            :item="item"
+            :index="index"
+            @addToBasket="addToBasket"
+          />
+        </div>
+      </div>
     </div>
-    <label for="sortVal">Sort By:</label>
-    <select name="sortVal" id="sortVal" v-model="sortVal">
-      <option value="0">Lesson Name</option>
-      <option value="2">Location</option>
-      <option value="3">Cost</option>
-      <option value="4">Available Slots</option>
-    </select>
-    <LessonItem
-      v-for="(item, index) in sortedList"
-      :item="item"
-      :index="index"
-      @addToBasket="addToBasket"
-    />
   </div>
-  <button @click="swap()">Swap Pages</button>
+  <button class="btn btn-light" @click="swap()" :disabled="hasBasket()">Swap Pages</button>
   
 </template>
 
