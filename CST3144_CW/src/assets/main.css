@@ -17,3 +17,6 @@
 .limitImg{
   max-height: 50px;
 }
+.basketItem{
+  max-width: fit-content;
+}

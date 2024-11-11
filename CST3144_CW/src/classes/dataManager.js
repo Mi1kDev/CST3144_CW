@@ -84,6 +84,7 @@ export default class DataManager{
             
           ]
         this.basket = {}
+        this.basketCount = 0
     }
     getKeys = () =>{
         if(this.productList.length > 0){
@@ -133,12 +134,17 @@ export default class DataManager{
         }
         return this.productList
     }
+    getBasketCount(){
+      return this.basketCount
+    }
     addToBasket(item){
       if(item.name in this.basket){
         this.basket[item.name].qty += 1
+        this.basketCount++
         return this.basket
       }
       this.basket[item.name] = {qty: 1, price: item.cost, name: item.name}
+      this.basketCount++
       return this.basket
     }
 }

@@ -41,6 +41,15 @@
     pageState.value.isHomePage = !pageState.value.isHomePage
   }
 
+  function getPageButton(){
+    if(pageState.value.isCheckout){
+      return "Home"
+    }
+    if(pageState.value.isHomePage){
+      return "View Basket: " + dataManager.getBasketCount()
+    }
+  }
+
   watch([ascending, sortVal], ([newValX, newValY], [oldValX, oldValY])=>{ 
     if(newValX !== oldValX || newValY !== oldValY){
       sortedList.value = []
@@ -53,13 +62,13 @@
 </script>
 
 <template>
-  <BasketPage
-    :basket="basket"
-    :pageState="pageState"
-  />
-  <div v-if="pageState.isHomePage" class="container bg-dark text-light">
-    <div class="row">
-      <div class="col-12 d-flex flex-column justify-content-center">
+  <div class="container-fluid bg-dark text-light mx-0 my-0">
+    <BasketPage
+      :basket="basket"
+      :pageState="pageState"
+    />
+    <div class="row" v-if="pageState.isHomePage">
+      <div class="col-12 d-flex flex-column justify-content-center rounded p-5">
         <Search/>
         <Sort
           @setIsAsc="setAscending"
@@ -75,9 +84,8 @@
         </div>
       </div>
     </div>
-  </div>
-  <button class="btn btn-light" @click="swap()" :disabled="hasBasket()">Swap Pages</button>
-  
+    <button class="btn btn-light" @click="swap()" :disabled="hasBasket()">{{ getPageButton() }}</button>
+  </div>  
 </template>
 
 
