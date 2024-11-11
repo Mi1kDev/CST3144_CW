@@ -1,86 +1,86 @@
 export default class DataManager{
     constructor(){
         this.productList = [
-            {
-              name: "Mathematics",
-              description: "Mathematics for beginners",
-              location: "103 Address Street",
-              cost: 10,
-              availableSlots: 5,
-              imageURL: '/icons/Calculator.png',
-            },
-            {
-              name: "English",
-              description: "English for beginners",
-              location: "123 Address Street",
-              cost: 20,
-              availableSlots: 5,
-              imageURL: "",
-            },
-            {
-              name: "Spanish",
-              description: "Spanish for beginners",
-              location: "123 Address Street",
-              cost: 15,
-              availableSlots: 5,
-              imageURL: "",
-            },
-            {
-              name: "Chemistry",
-              description: "Chemistry for beginners",
-              location: "123 Address Street",
-              cost: 10,
-              availableSlots: 5,
-              imageURL: "/icons/Chemistry.png",
-            },
-            {
-              name: "Physics",
-              description: "Physics for beginners",
-              location: "123 Address Street",
-              cost: 16,
-              availableSlots: 5,
-              imageURL: "",
-            },
-            {
-              name: "Biology",
-              description: "Biology for beginners",
-              location: "123 Address Street",
-              cost: 21,
-              availableSlots: 5,
-              imageURL: "",
-            },
-            {
-              name: "Mechanical Engineering",
-              description: "Mechanical Engineering for beginners",
-              location: "123 Address Street",
-              cost: 20,
-              availableSlots: 5,
-              imageURL: "",
-            },
-            {
-              name: "IT",
-              description: "IT for beginners",
-              location: "123 Address Street",
-              cost: 25,
-              availableSlots: 5,
-              imageURL: "",
-            },
-            {
-              name: "Computer Science",
-              description: "Computer Science for beginners",
-              location: "123 Address Street",
-              cost: 20,
-              availableSlots: 5,
-              imageURL: "",
-            },
-            {
-              name: "French",
-              description: "French for beginners",
-              location: "123 Address Street",
-              cost: 8,
-              availableSlots: 5,
-              imageURL: "",
-            },
+            // {
+            //   name: "Mathematics",
+            //   description: "Mathematics for beginners",
+            //   location: "103 Address Street",
+            //   cost: 10,
+            //   availableSlots: 5,
+            //   imageURL: '/icons/Calculator.png',
+            // },
+            // {
+            //   name: "English",
+            //   description: "English for beginners",
+            //   location: "123 Address Street",
+            //   cost: 20,
+            //   availableSlots: 5,
+            //   imageURL: "",
+            // },
+            // {
+            //   name: "Spanish",
+            //   description: "Spanish for beginners",
+            //   location: "123 Address Street",
+            //   cost: 15,
+            //   availableSlots: 5,
+            //   imageURL: "",
+            // },
+            // {
+            //   name: "Chemistry",
+            //   description: "Chemistry for beginners",
+            //   location: "123 Address Street",
+            //   cost: 10,
+            //   availableSlots: 5,
+            //   imageURL: "/icons/Chemistry.png",
+            // },
+            // {
+            //   name: "Physics",
+            //   description: "Physics for beginners",
+            //   location: "123 Address Street",
+            //   cost: 16,
+            //   availableSlots: 5,
+            //   imageURL: "",
+            // },
+            // {
+            //   name: "Biology",
+            //   description: "Biology for beginners",
+            //   location: "123 Address Street",
+            //   cost: 21,
+            //   availableSlots: 5,
+            //   imageURL: "",
+            // },
+            // {
+            //   name: "Mechanical Engineering",
+            //   description: "Mechanical Engineering for beginners",
+            //   location: "123 Address Street",
+            //   cost: 20,
+            //   availableSlots: 5,
+            //   imageURL: "",
+            // },
+            // {
+            //   name: "IT",
+            //   description: "IT for beginners",
+            //   location: "123 Address Street",
+            //   cost: 25,
+            //   availableSlots: 5,
+            //   imageURL: "",
+            // },
+            // {
+            //   name: "Computer Science",
+            //   description: "Computer Science for beginners",
+            //   location: "123 Address Street",
+            //   cost: 20,
+            //   availableSlots: 5,
+            //   imageURL: "",
+            // },
+            // {
+            //   name: "French",
+            //   description: "French for beginners",
+            //   location: "123 Address Street",
+            //   cost: 8,
+            //   availableSlots: 5,
+            //   imageURL: "",
+            // },
             
           ]
         this.basket = {}
@@ -137,6 +137,16 @@ export default class DataManager{
     getBasketCount(){
       return this.basketCount
     }
+    findProductIdx(name){
+        let x = 0
+        for(let product of this.productList){
+            if(name == product.name){
+                break;
+            }
+            x++
+        }
+        return x
+    }
     addToBasket(item){
       if(item.name in this.basket){
         this.basket[item.name].qty += 1
@@ -146,5 +156,9 @@ export default class DataManager{
       this.basket[item.name] = {qty: 1, price: item.cost, name: item.name}
       this.basketCount++
       return this.basket
+    }
+    removeFromBasket(item){
+        delete this.basket[item.name]
+        return this.basket
     }
 }

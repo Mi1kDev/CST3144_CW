@@ -1,5 +1,5 @@
 <script setup>
-  import {ref, computed, reactive, watch} from 'vue';
+  import {ref, computed, reactive, watch, onMounted} from 'vue';
   import LessonItem from './components/LessonItem.vue'; 
   import DataManager from './classes/dataManager';
   import BasketPage from './components/BasketPage.vue';
@@ -25,8 +25,23 @@
     }
   }
 
+  function removeFromBasket(count, name){
+    let idx = dataManager.findProductIdx(name)
+    dataManager.productList[idx].availableSlots = dataManager.productList[idx].availableSlots + count
+    dataManager.basketCount--
+    console.log("SLOTS FOR "+name+" "+dataManager.productList[idx].availableSlots)
+    if(dataManager.productList[idx].availableSlots >= 5 /*Upper limit of slots */){
+      let tempBask = dataManager.removeFromBasket(dataManager.productList[idx])
+      basket.value = []
+      for(let key of Object.keys(tempBask)){
+        let obj = {qty: tempBask[key].qty, price: tempBask[key].price, name: tempBask[key].name}
+        basket.value.push(obj)
+      }
+    }
+  }
+
   function hasBasket(){
-    return Object.keys(dataManager.basket).length <= 0
+    return Object.keys(dataManager.basket).length <= 0 && pageState.value.isCheckout == false
   }
 
   function setAscending(value){
@@ -58,23 +73,49 @@
         sortedList.value.push(obj)
       }
     } 
-  }, {immediate: true})
+  })
+
+  async function init(){
+    const url = "http://localhost:5174/api/lessons"
+    let response
+    try{
+        response = await fetch(url, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+      })
+      const data = await response.json()
+      dataManager.productList = data
+      let tempList = dataManager.sort(sortVal.value, ascending.value)
+      for(let obj of tempList){
+        sortedList.value.push(obj)
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
+  onMounted(async() =>{
+    await init()
+  })
 </script>
 
 <template>
   <div class="container-fluid bg-dark text-light mx-0 my-0">
+    <div class="col-12">
+        <button class="btn btn-light" @click="swap()" :disabled="hasBasket()">{{ getPageButton() }}</button>
+      </div>
     <BasketPage
       :basket="basket"
       :pageState="pageState"
+      @basket-remove-item="removeFromBasket"
     />
-    <div class="row" v-if="pageState.isHomePage">
-      <div class="col-12 d-flex flex-column justify-content-center rounded p-5">
+    <div class="row">
+      <div v-if="pageState.isHomePage" class="col-12 d-flex flex-column justify-content-center rounded p-5">
         <Search/>
         <Sort
           @setIsAsc="setAscending"
           v-model:sortVal="sortVal"
         />
-        <div class="lessonGrid mt-3 mx-4">
+        <div class="lessonGrid mt-3 mx-4 overflow-auto">
           <LessonItem
             v-for="(item, index) in sortedList"
             :item="item"
@@ -84,7 +125,6 @@
         </div>
       </div>
     </div>
-    <button class="btn btn-light" @click="swap()" :disabled="hasBasket()">{{ getPageButton() }}</button>
   </div>  
 </template>
 

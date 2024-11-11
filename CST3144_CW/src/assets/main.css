@@ -17,6 +17,9 @@
 .limitImg{
   max-height: 50px;
 }
+.basketPage{
+  height: 100vh;
+}
 .basketItem{
   max-width: fit-content;
 }
