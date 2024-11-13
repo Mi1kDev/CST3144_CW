@@ -1,7 +1,32 @@
 <script setup>
     import BasketItem from './BasketItem.vue';
+    import {ref} from 'vue'
+
     const emit = defineEmits(['basketRemoveItem'])
     const  props = defineProps(['basket', 'pageState'])
+    const userInformation = {
+        name: "",
+        phoneNumber: "",
+        ccNum: "",
+        expDate: "",
+        ccv: ""
+    }
+    const validation = {
+        name: false,
+        phoneNumber: false,
+        ccNum: false,
+        expDate: false,
+        ccv: false
+    }
+
+    const basicText = new RegExp("[a-zA-Z]+")
+    const phoneNumber = new RegExp("[0-9]{11}")
+    const card = new RegExp("[0-9]{16}")
+    const date = new RegExp("[0-9]{1,2}\/{1}[0-9]{4}")
+    const cvv = new RegExp("[0-9]{3}")
+
+    let submitAllowed = ref(false)
+
     function calculateTotal(){
         let total = 0
         for(let obj of props.basket){
@@ -9,9 +34,23 @@
         }
         return total
     }
-    function emitSignal(count, name){
-        emit('basketRemoveItem', count, name)
+    function emitSignal(name){
+        emit('basketRemoveItem', name)
     }
+    function submit(){
+    }
+
+    function isValid(){
+        console.log(submitAllowed.value)
+        submitAllowed.value =  !(validation.name && validation.phoneNumber && validation.ccNum && validation.expDate && validation.ccv)
+    }
+
+    function validate(testStr, regex, idx){
+        let value = regex.test(testStr)
+        validation[idx] = value
+        isValid()
+    }
+
 </script>
 <template>
     <div v-if="pageState.isCheckout" class="row">
@@ -28,10 +67,23 @@
                 <p>Total: {{ calculateTotal() }}</p>
             </div>
         </div>
+        <div class="col-6">
+            <input type="text" class="input-group" v-model="userInformation.name" @keyup="validate(userInformation.name, basicText,'name')">
+        </div>
+        <div class="col-6">
+            <input type="text" class="input-group" v-model="userInformation.phoneNumber" @keyup="validate(userInformation.phoneNumber, phoneNumber,'phoneNumber')">
+        </div>
+        <div class="col-8">
+            <input type="text" class="input-group" v-model="userInformation.ccNum" @keyup="validate(userInformation.ccNum, card,'ccNum')">
+        </div>
+        <div class="col-2">
+            <input type="text" class="input-group" v-model="userInformation.expDate" @keyup="validate(userInformation.expDate, date,'expDate')">
+        </div>
+        <div class="col-2">
+            <input type="text" class="input-group" v-model="userInformation.ccv" @keyup="validate(userInformation.ccv, cvv,'ccv')">
+        </div>
         <div class="col-12">
-            <input type="text" class="input-group">
-            <input type="number" class="input-group">
-            <button class="btn btn-success">Checkout</button>
+            <button class="btn btn-success" @click="submit()" :disabled="submitAllowed">Checkout</button>
         </div>
     </div>
 </template>

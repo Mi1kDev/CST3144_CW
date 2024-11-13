@@ -25,10 +25,11 @@
     }
   }
 
-  function removeFromBasket(count, name){
+  function removeFromBasket(name){
     let idx = dataManager.findProductIdx(name)
-    dataManager.productList[idx].availableSlots = dataManager.productList[idx].availableSlots + count
+    dataManager.productList[idx].availableSlots++
     dataManager.basketCount--
+    dataManager.basket[dataManager.productList[idx].name].qty--
     console.log("SLOTS FOR "+name+" "+dataManager.productList[idx].availableSlots)
     if(dataManager.productList[idx].availableSlots >= 5 /*Upper limit of slots */){
       let tempBask = dataManager.removeFromBasket(dataManager.productList[idx])
@@ -76,7 +77,7 @@
   })
 
   async function init(){
-    const url = "http://localhost:5174/api/lessons"
+    const url = "http://localhost:5174/lessons"
     let response
     try{
         response = await fetch(url, {
