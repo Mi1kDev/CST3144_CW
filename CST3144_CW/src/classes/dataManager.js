@@ -153,7 +153,7 @@ export default class DataManager{
         this.basketCount++
         return this.basket
       }
-      this.basket[item.name] = {qty: 1, price: item.cost, name: item.name}
+      this.basket[item.name] = {qty: 1, price: item.cost, name: item.name, lessonId: item.lessonId}
       this.basketCount++
       return this.basket
     }

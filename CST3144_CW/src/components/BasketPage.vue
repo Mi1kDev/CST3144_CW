@@ -37,12 +37,30 @@
     function emitSignal(name){
         emit('basketRemoveItem', name)
     }
-    function submit(){
+
+    async function submit(){
+        const order = {
+            name: userInformation.name,
+            phoneNumber: userInformation.phoneNumber,
+            orders: props.basket
+        }
+        console.log(order)
+        try{
+            const response = await fetch("http://localhost:5174/order", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(order)
+            })
+            
+        }catch(err){
+            if(err){throw err}
+        }
+        
     }
 
     function isValid(){
-        console.log(submitAllowed.value)
-        submitAllowed.value =  !(validation.name && validation.phoneNumber && validation.ccNum && validation.expDate && validation.ccv)
+        //invert
+        submitAllowed.value =  (validation.name && validation.phoneNumber && validation.ccNum && validation.expDate && validation.ccv)
     }
 
     function validate(testStr, regex, idx){

@@ -20,7 +20,7 @@
     basket.value = []
     let tempBask = dataManager.addToBasket(item)
     for(let key of Object.keys(tempBask)){
-      let obj = {qty: tempBask[key].qty, price: tempBask[key].price, name: tempBask[key].name}
+      let obj = {lessonId: tempBask[key].lessonId, qty: tempBask[key].qty, price: tempBask[key].price, name: tempBask[key].name}
       basket.value.push(obj)
     }
   }
@@ -30,12 +30,11 @@
     dataManager.productList[idx].availableSlots++
     dataManager.basketCount--
     dataManager.basket[dataManager.productList[idx].name].qty--
-    console.log("SLOTS FOR "+name+" "+dataManager.productList[idx].availableSlots)
     if(dataManager.productList[idx].availableSlots >= 5 /*Upper limit of slots */){
       let tempBask = dataManager.removeFromBasket(dataManager.productList[idx])
       basket.value = []
       for(let key of Object.keys(tempBask)){
-        let obj = {qty: tempBask[key].qty, price: tempBask[key].price, name: tempBask[key].name}
+        let obj = {lessonId: tempBask[key].lessonId, qty: tempBask[key].qty, price: tempBask[key].price, name: tempBask[key].name}
         basket.value.push(obj)
       }
     }
