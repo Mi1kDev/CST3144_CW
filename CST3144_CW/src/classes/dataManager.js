@@ -1,90 +1,19 @@
 export default class DataManager{
+    static instance = null
     constructor(){
-        this.productList = [
-            // {
-            //   name: "Mathematics",
-            //   description: "Mathematics for beginners",
-            //   location: "103 Address Street",
-            //   cost: 10,
-            //   availableSlots: 5,
-            //   imageURL: '/icons/Calculator.png',
-            // },
-            // {
-            //   name: "English",
-            //   description: "English for beginners",
-            //   location: "123 Address Street",
-            //   cost: 20,
-            //   availableSlots: 5,
-            //   imageURL: "",
-            // },
-            // {
-            //   name: "Spanish",
-            //   description: "Spanish for beginners",
-            //   location: "123 Address Street",
-            //   cost: 15,
-            //   availableSlots: 5,
-            //   imageURL: "",
-            // },
-            // {
-            //   name: "Chemistry",
-            //   description: "Chemistry for beginners",
-            //   location: "123 Address Street",
-            //   cost: 10,
-            //   availableSlots: 5,
-            //   imageURL: "/icons/Chemistry.png",
-            // },
-            // {
-            //   name: "Physics",
-            //   description: "Physics for beginners",
-            //   location: "123 Address Street",
-            //   cost: 16,
-            //   availableSlots: 5,
-            //   imageURL: "",
-            // },
-            // {
-            //   name: "Biology",
-            //   description: "Biology for beginners",
-            //   location: "123 Address Street",
-            //   cost: 21,
-            //   availableSlots: 5,
-            //   imageURL: "",
-            // },
-            // {
-            //   name: "Mechanical Engineering",
-            //   description: "Mechanical Engineering for beginners",
-            //   location: "123 Address Street",
-            //   cost: 20,
-            //   availableSlots: 5,
-            //   imageURL: "",
-            // },
-            // {
-            //   name: "IT",
-            //   description: "IT for beginners",
-            //   location: "123 Address Street",
-            //   cost: 25,
-            //   availableSlots: 5,
-            //   imageURL: "",
-            // },
-            // {
-            //   name: "Computer Science",
-            //   description: "Computer Science for beginners",
-            //   location: "123 Address Street",
-            //   cost: 20,
-            //   availableSlots: 5,
-            //   imageURL: "",
-            // },
-            // {
-            //   name: "French",
-            //   description: "French for beginners",
-            //   location: "123 Address Street",
-            //   cost: 8,
-            //   availableSlots: 5,
-            //   imageURL: "",
-            // },
-            
-          ]
+        if(this.instance){
+            throw new Error("Singleton cannot have more than one instance")
+        }
+        this.productList = []
         this.basket = {}
         this.basketCount = 0
+    }
+    static getInstance(){
+        if(this.instance === null){
+            this.instance = new DataManager()
+            return this.instance
+        }
+        return this.instance
     }
     getKeys = () =>{
         if(this.productList.length > 0){
@@ -134,7 +63,24 @@ export default class DataManager{
         }
         return this.productList
     }
-    getBasketCount(){
+
+    setProductList = (newList) =>{
+        this.productList = newList
+    }
+
+    isProductListDifferent = (listA, listB) =>{
+        if(listA.length !== listB.length){
+            return true
+        }
+        for(let i = 0; i < listA.length; i++){
+            if(listA[i].lessonId !== listB[i].lessonId){
+                return true
+            }
+        }
+        return false
+    }
+
+    getBasketCount = () =>{
       return this.basketCount
     }
     findProductIdx(name){
@@ -153,7 +99,7 @@ export default class DataManager{
         this.basketCount++
         return this.basket
       }
-      this.basket[item.name] = {qty: 1, price: item.cost, name: item.name, lessonId: item.lessonId}
+      this.basket[item.name] = {qty: 1, price: item.cost, name: item.name, lessonId: item.lessonId, maxSlots: item.maxSlots}
       this.basketCount++
       return this.basket
     }
