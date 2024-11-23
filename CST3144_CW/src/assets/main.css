@@ -1,3 +1,18 @@
+:root{
+  --burgundy: #800029;
+  --offWhite: rgb(155, 155, 155);
+}
+
+.navbar{
+  background-color: var(--burgundy);
+}
+.navButton{
+  width: 8vw;
+  height: 6vh;
+}
+.navText{
+  font-size: 80%;
+}
 .lessonGrid{
   grid-gap: 10px;
   display: grid;
@@ -22,4 +37,7 @@
 }
 .basketItem{
   max-width: fit-content;
+}
+.off-white{
+  background-color: var(--offWhite);
 }

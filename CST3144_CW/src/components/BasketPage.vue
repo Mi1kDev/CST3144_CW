@@ -61,12 +61,17 @@
             let i = {lessonId: obj.lessonId, property: {type: "availableSlots", value: (obj.maxSlots - obj.qty)}}
             lessonSimple.push(i)
         }
-        fetch("https://cst3144-cw-express.onrender.com/update", {
-            method: "PUT",
-            headers: {"Content-Type": "application/json"},
-            mode: "cors",
-            body: JSON.stringify(lessonSimple)
-        })
+        try{
+            const response = await fetch("https://cst3144-cw-express.onrender.com/update", {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                mode: "cors",
+                body: JSON.stringify(lessonSimple)
+            })
+        }catch(err){
+            if(err){throw err}
+        }
+        
     }
 
     async function submit(){
@@ -89,7 +94,7 @@
 
 </script>
 <template>
-    <div v-if="pageState.isCheckout" class="row">
+    <div v-if="pageState.isCheckout" class="off-white">
         <div class="col-3 basketPage overflow-auto p-5">
             <BasketItem
                 v-for="(item, key) in basket"

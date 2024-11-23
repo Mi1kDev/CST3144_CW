@@ -43,6 +43,7 @@
       for(let obj of tempList){
         sortedList.value.push(obj)
       }
+      console.log("Success")
     }catch(err){
       console.log(err)
     }
@@ -75,14 +76,13 @@
 </script>
 
 <template>
-  <div class="row">
       <div v-if="props.pageState.isHomePage" class="col-12 d-flex flex-column justify-content-center rounded p-5">
         <Search/>
         <Sort
           @setIsAsc="setAscending"
           v-model:sortVal="sortVal"
         />
-        <div class="lessonGrid mt-3 mx-4 overflow-auto">
+        <div class="lessonGrid mt-3 mx-4 overflow-auto off-white px-5 py-3 rounded">
           <LessonItem
             v-for="(item, index) in sortedList"
             :item="item"
@@ -91,5 +91,4 @@
           />
         </div>
       </div>
-    </div>
 </template>

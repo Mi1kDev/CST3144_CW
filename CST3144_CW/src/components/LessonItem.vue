@@ -1,6 +1,7 @@
 <script setup>
     const emit = defineEmits(['addToBasket'])
     const props = defineProps(['item','index'])
+    
     function addToBasket(item){
         if(item.availableSlots > 0){
             item.availableSlots -= 1
