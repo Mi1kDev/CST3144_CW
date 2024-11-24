@@ -19,21 +19,25 @@
 .lessonGrid{
   grid-gap: 10px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  height: 100vh;
+  /* grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); */
+  grid-template-columns: 25% 25% 25% 25%;
+  height: fit-content;
+  max-height: 90vh;
 
 }
 .lessonItem{
   display: inline-block;
   grid-gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  max-height: fit-content;
+  max-width: 25vw;
+  /* grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); */
 }
 .lessonContent{
   height: 85%;
   max-height: 85%;
 }
 .limitImg{
-  max-height: 50px;
+  width: auto;
 }
 .basketPage{
   height: 80vh;
@@ -45,9 +49,13 @@
   background-color: var(--offWhite);
 }
 .carouselHeight{
-  max-height: 50vh;
-  height: 50vh;
+  max-height: 90vh;
+  height: 90vh;
 }
 .fitContent{
   width:fit-content;
+}
+.overflow-y{
+  overflow-y: auto;
+  overflow-x: hidden;
 }

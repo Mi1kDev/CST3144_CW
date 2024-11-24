@@ -85,7 +85,7 @@
             v-model:sortVal="sortVal"
           />
         </div>
-        <div class="lessonGrid mt-3 mx-4 overflow-auto off-white px-5 py-3 rounded">
+        <div class="lessonGrid mt-3 mx-4 overflow-y off-white px-5 py-3 rounded">
           <LessonItem
             v-for="(item, index) in sortedList"
             :item="item"
