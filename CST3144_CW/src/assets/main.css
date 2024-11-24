@@ -2,6 +2,9 @@
   --burgundy: #800029;
   --offWhite: rgb(155, 155, 155);
 }
+.burgundy{
+  background-color: var(--burgundy);
+}
 
 .navbar{
   background-color: var(--burgundy);
@@ -40,4 +43,11 @@
 }
 .off-white{
   background-color: var(--offWhite);
+}
+.carouselHeight{
+  max-height: 50vh;
+  height: 50vh;
+}
+.fitContent{
+  width:fit-content;
 }

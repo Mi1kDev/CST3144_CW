@@ -4,10 +4,9 @@
   import BasketPage from './components/BasketPage.vue';
   import LessonPage from './components/LessonPage.vue';
   import Navbar from './components/Navbar.vue';
-  import Carousel from './components/Carousel.vue';
   
   const basket = ref([])
-  let basketCount = reactive("0")
+  let basketCount = ref(0)
   const pageState = reactive({
     isHomePage: true,
     isCheckout: false,
@@ -17,7 +16,7 @@
   function addToBasket(item){
     basket.value = []
     let tempBask = dataManager.addToBasket(item)
-    basketCount = dataManager.getBasketCount()
+    basketCount.value = dataManager.getBasketCount()
     for(let key of Object.keys(tempBask)){
       let obj = {lessonId: tempBask[key].lessonId, qty: tempBask[key].qty, price: tempBask[key].price, name: tempBask[key].name, maxSlots: tempBask[key].maxSlots}
       basket.value.push(obj)
@@ -52,7 +51,6 @@
         :pageState="pageState"
         :basketCount="basketCount"
       />
-      <Carousel/>
       <BasketPage
         :basket="basket"
         :pageState="pageState"

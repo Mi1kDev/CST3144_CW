@@ -7,6 +7,12 @@ export default class DataManager{
         this.productList = []
         this.basket = {}
         this.basketCount = 0
+        this.sortTypes = {
+            name: 2,
+            location: 4,
+            cost: 5,
+            slots: 6
+        }
     }
     static getInstance(){
         if(this.instance === null){
@@ -24,24 +30,24 @@ export default class DataManager{
     sortByName = (sortVal, isAsc) =>{
         const keys = this.getKeys()
         this.productList.sort((a, b) =>{
-        let smallVal = -1
-        let bigVal = 1
-        if(a[keys[sortVal]].toUpperCase() < b[keys[sortVal]].toUpperCase()){
-            if(isAsc){
-            return smallVal
-            }else{
-            return bigVal
+            let smallVal = -1
+            let bigVal = 1
+            if(a[keys[sortVal]].toUpperCase() < b[keys[sortVal]].toUpperCase()){
+                if(isAsc){
+                return smallVal
+                }else{
+                return bigVal
+                }
             }
-        }
-        if(a[keys[sortVal]].toUpperCase() > b[keys[sortVal]].toUpperCase()){
-            if(isAsc){
-            return bigVal
-            }else{
-            return smallVal
+            if(a[keys[sortVal]].toUpperCase() > b[keys[sortVal]].toUpperCase()){
+                if(isAsc){
+                return bigVal
+                }else{
+                return smallVal
+                }
             }
-        }
-        return 0
-        })
+            return 0
+            })
     }
     sortByNumber = (sortVal, isAsc) =>{
         const keys = this.getKeys()
@@ -51,14 +57,22 @@ export default class DataManager{
             this.productList.sort((a, b) =>b[keys[sortVal]] - a[keys[sortVal]])
           }
     }
-    sort = (sortVal, isAsc) =>{
-        let value = sortVal
-        if(typeof(sortVal) !== 'number'){
-            value = parseInt(sortVal)
+    convertToSortType = (key) =>{
+        let value
+        if(typeof(key) !== 'number'){
+            value = parseInt(key)
+        }else{
+            value = key
         }
-        if(value === 0 || value === 2){
+        let keys = Object.keys(this.sortTypes)
+        return this.sortTypes[keys[value]]
+    }
+    sort = (sortVal, isAsc) =>{
+        let value = this.convertToSortType(sortVal)
+        
+        if(value === this.sortTypes.name || value === this.sortTypes.location){
             this.sortByName(value, isAsc)
-        }else if(value == 3 || value == 4){
+        }else if(value === this.sortTypes.cost || value === this.sortTypes.slots){
             this.sortByNumber(value, isAsc)
         }
         return this.productList

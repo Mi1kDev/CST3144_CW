@@ -10,9 +10,8 @@
     })
 </script>
 <template>
-    <div class="input-group mb-3">
-        <span class="input-group-text">Search</span>
-        <input type="text" class="form-control" v-model="searchTerm">
-        <button class="btn btn-light">Search</button>
+    <div class="input-group">
+        <span class="input-group-text burgundy text-light"><i class="fa fa-search" aria-hidden="true"></i></span>
+        <input type="text" class="form-control border-dark" v-model="searchTerm">
     </div>
 </template>

@@ -5,6 +5,7 @@
   import Search from './Search.vue';
   import Sort from './Sort.vue';
   import LessonItem from './LessonItem.vue'; 
+  import Carousel from './Carousel.vue';
 
   const props = defineProps(['pageState'])
   const emit = defineEmits(['basketAddItem'])
@@ -43,7 +44,6 @@
       for(let obj of tempList){
         sortedList.value.push(obj)
       }
-      console.log("Success")
     }catch(err){
       console.log(err)
     }
@@ -76,12 +76,15 @@
 </script>
 
 <template>
-      <div v-if="props.pageState.isHomePage" class="col-12 d-flex flex-column justify-content-center rounded p-5">
-        <Search/>
-        <Sort
-          @setIsAsc="setAscending"
-          v-model:sortVal="sortVal"
-        />
+      <div v-if="props.pageState.isHomePage" class="col-12 d-flex flex-column justify-content-center mx-0 w-100 p-0">
+        <Carousel/>
+        <div class="px-4">
+          <Search/>
+          <Sort
+            @setIsAsc="setAscending"
+            v-model:sortVal="sortVal"
+          />
+        </div>
         <div class="lessonGrid mt-3 mx-4 overflow-auto off-white px-5 py-3 rounded">
           <LessonItem
             v-for="(item, index) in sortedList"
