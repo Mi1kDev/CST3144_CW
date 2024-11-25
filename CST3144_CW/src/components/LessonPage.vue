@@ -1,6 +1,5 @@
 <script setup>
   import {watch, onMounted, ref} from 'vue';
-  import { socket } from '@/socket.js';
   import DataManager from '../classes/dataManager.js';
   import Search from './Search.vue';
   import Sort from './Sort.vue';
@@ -59,18 +58,6 @@
       sortedList.value.push(obj)
     }
   }
-
-  // socket.on("found", (lessons)=>{
-  //   if(!dataManager.isProductListDifferent(lessons, dataManager.productList)){
-  //     return
-  //   }
-  //   dataManager.setProductList(lessons)
-  //   sortedList.value = []
-  //   let tempList = dataManager.sort(sortVal.value, ascending.value)
-  //   for(let obj of tempList){
-  //     sortedList.value.push(obj)
-  //   }
-  // })
 
   watch([ascending, sortVal], ([newValX, newValY], [oldValX, oldValY])=>{ 
     if(newValX !== oldValX || newValY !== oldValY){
