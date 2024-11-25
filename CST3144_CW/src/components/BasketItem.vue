@@ -23,11 +23,11 @@
 </script>
 
 <template>
-    <div class="basketItem rounded bg-light text-dark">
+    <div class="basketItem rounded burgundy text-light mb-3 ">
         <p>Product Name: {{ item.name }}</p>
         <p>Quantity: {{ getItemQty(item) }}</p>
         <p>Price: {{ item.price }}</p>
         <p>Total Cost: {{ calc() }}</p>
-        <button class="btn btn-danger" @click="removeFromBasket(item)">Remove from Basket</button>
+        <button class="btn btn-success w-100" @click="removeFromBasket(item)"><i class="fa fa-trash" aria-hidden="true"></i></button>
     </div>
 </template>

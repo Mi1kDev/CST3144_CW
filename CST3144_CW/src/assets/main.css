@@ -19,17 +19,19 @@
 .lessonGrid{
   grid-gap: 10px;
   display: grid;
-  /* grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); */
-  grid-template-columns: 25% 25% 25% 25%;
-  height: fit-content;
-  max-height: 90vh;
+  /* grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); */
+  grid-template-columns: 19.8% 19.8% 19.8% 19.8% 19.8%;
+  height: 90vh;
 
 }
-.lessonItem{
+.lessonItemContainer{
+  height: max-content;
+}
+.card.lessonItem{
   display: inline-block;
-  grid-gap: 10px;
-  max-height: fit-content;
-  max-width: 25vw;
+  grid-gap: 20%;
+  /* max-height: fit-content; */
+  /* max-width: 25vw; */
   /* grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); */
 }
 .lessonContent{
@@ -40,17 +42,17 @@
   width: auto;
 }
 .basketPage{
-  height: 80vh;
+  height: 70vh;
 }
 .basketItem{
-  max-width: fit-content;
+  max-width: 100%;
 }
 .off-white{
   background-color: var(--offWhite);
 }
 .carouselHeight{
-  max-height: 90vh;
-  height: 90vh;
+  max-height: 80vh;
+  height: 80vh;
 }
 .fitContent{
   width:fit-content;
@@ -58,4 +60,16 @@
 .overflow-y{
   overflow-y: auto;
   overflow-x: hidden;
+}
+.hiddenScroll{
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hiddenScroll::-webkit-scrollbar{
+  display: none;
+}
+.footer{
+  height: 50vh;
 }

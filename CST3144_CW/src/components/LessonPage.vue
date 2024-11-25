@@ -25,7 +25,6 @@
     emit('basketAddItem', name)
   }
   async function init(){
-    //const url = "http://localhost:5174/lessons"
     const url = "https://cst3144-cw-express.onrender.com/lessons"
     let response
     try{
@@ -52,17 +51,26 @@
     await init()
   })
 
-  socket.on("found", (lessons)=>{
-    if(!dataManager.isProductListDifferent(lessons, dataManager.productList)){
-      return
-    }
-    dataManager.setProductList(lessons)
+  function updateLessonInformation(){
+    console.log("Update")
     sortedList.value = []
     let tempList = dataManager.sort(sortVal.value, ascending.value)
     for(let obj of tempList){
       sortedList.value.push(obj)
     }
-  })
+  }
+
+  // socket.on("found", (lessons)=>{
+  //   if(!dataManager.isProductListDifferent(lessons, dataManager.productList)){
+  //     return
+  //   }
+  //   dataManager.setProductList(lessons)
+  //   sortedList.value = []
+  //   let tempList = dataManager.sort(sortVal.value, ascending.value)
+  //   for(let obj of tempList){
+  //     sortedList.value.push(obj)
+  //   }
+  // })
 
   watch([ascending, sortVal], ([newValX, newValY], [oldValX, oldValY])=>{ 
     if(newValX !== oldValX || newValY !== oldValY){
@@ -79,13 +87,15 @@
       <div v-if="props.pageState.isHomePage" class="col-12 d-flex flex-column justify-content-center mx-0 w-100 p-0">
         <Carousel/>
         <div class="px-4">
-          <Search/>
+          <Search
+            @found="updateLessonInformation"
+          />
           <Sort
             @setIsAsc="setAscending"
             v-model:sortVal="sortVal"
           />
         </div>
-        <div class="lessonGrid mt-3 mx-4 overflow-y off-white px-5 py-3 rounded">
+        <div class="lessonGrid mt-3 mx-4 overflow-y off-white px-5 py-3 rounded-3 border border-1 border-dark">
           <LessonItem
             v-for="(item, index) in sortedList"
             :item="item"

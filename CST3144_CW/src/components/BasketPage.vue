@@ -94,28 +94,24 @@
 
 </script>
 <template>
-    <div v-if="pageState.isCheckout" class="off-white">
-        <div class="col-3 basketPage overflow-auto p-5">
-            <BasketItem
+    <div v-if="pageState.isCheckout" class="row">
+        <div class="col-4 px-3 py-2 off-white mt-3 ms-3 rounded">
+            <div class="overflow-auto basketPage">
+                <BasketItem
                 v-for="(item, key) in basket"
                 :key="key"
                 :item="item"
                 @remove-from-basket="emitSignal"
-            />
-        </div>
-        <div class="col-12">
+                />
+            </div>
             <div class="checkout">
-                <p>Total: {{ calculateTotal() }}</p>
+                <p>Total: £{{ calculateTotal() }}</p>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-7">
             <input type="text" class="input-group" v-model="userInformation.name" @keyup="validate(userInformation.name, basicText,'name')">
-        </div>
-        <div class="col-6">
             <input type="text" class="input-group" v-model="userInformation.phoneNumber" @keyup="validate(userInformation.phoneNumber, phoneNumber,'phoneNumber')">
-        </div>
-        <div class="col-12">
             <button class="btn btn-success" @click="submit()" :disabled="isDisabled">Checkout</button>
-        </div>
+        </div>  
     </div>
 </template>

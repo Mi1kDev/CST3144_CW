@@ -4,7 +4,8 @@
   import BasketPage from './components/BasketPage.vue';
   import LessonPage from './components/LessonPage.vue';
   import Navbar from './components/Navbar.vue';
-  
+  import Footer from './components/Footer.vue';
+
   const basket = ref([])
   let basketCount = ref(0)
   const pageState = reactive({
@@ -27,6 +28,7 @@
     let idx = dataManager.findProductIdx(name)
     dataManager.productList[idx].availableSlots++
     dataManager.basketCount--
+    basketCount.value = dataManager.getBasketCount()
     dataManager.basket[dataManager.productList[idx].name].qty--
     if(dataManager.productList[idx].availableSlots >= dataManager.productList[idx].maxSlots /*Upper limit of slots */){
       let tempBask = dataManager.removeFromBasket(dataManager.productList[idx])
@@ -36,10 +38,6 @@
         basket.value.push(obj)
       }
     }
-  }
-
-  function hasBasket(){
-    return Object.keys(dataManager.basket).length <= 0 && pageState.isCheckout == false
   }  
 
 </script>
@@ -60,6 +58,7 @@
         :pageState="pageState"
         @basket-add-item="addToBasket"
       />
+      <Footer/>
     </div>
   </div>  
 </template>
