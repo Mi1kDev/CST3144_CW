@@ -1,4 +1,5 @@
 <template>
+    <!-- Footer layout -->
     <div class="burgundy row footer p-0 mx-0">
         <div class="col-4">
         </div>

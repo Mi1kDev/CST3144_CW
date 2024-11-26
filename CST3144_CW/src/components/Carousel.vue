@@ -1,5 +1,5 @@
 <template>
-    <!-- Carousel template for slideshow -->
+    <!-- Carousel layout for slideshow -->
      <div id="slideshow" class="carousel slide mx-0 mb-3" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#slideshow" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>

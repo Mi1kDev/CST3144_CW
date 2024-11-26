@@ -1,11 +1,12 @@
 <script setup>
+    // define signals and props for the component
     const emit = defineEmits(['removeFromBasket'])
     const props = defineProps(['item', 'index'])
-
+    // calculates the total price for the given lesson
     function calc(){
         return props.item.qty * props.item.price
     }
-
+    // removes an item from the basket
     function removeFromBasket(item){
         if(item.qty > 1){
             item.qty--
@@ -15,7 +16,7 @@
             emit('removeFromBasket', name)
         }
     }
-
+    // returns the number of items
     function getItemQty(item){
         return item.qty
     }

@@ -1,28 +1,34 @@
 <script setup>
-    import DataManager from '@/classes/dataManager.js';
     import BasketItem from './BasketItem.vue';
     import {reactive, ref} from 'vue'
 
+    // define signals and props for the component
     const emit = defineEmits(['basketRemoveItem', 'clearBasket', 'goHome'])
     const props = defineProps(['basket', 'pageState'])
+    // object keeping track of the name and phonenumber entered by the user
     const userInformation = reactive({
         name: "",
         phoneNumber: "",
     })
+    // object to store whether or not the user entered information is valid or not
     const validation = {
         name: false,
         phoneNumber: false,
     }
+    // object to store modal message information
     const checkoutStatus = reactive({
         title: "",
         message: ""
     })
 
+    // regex for validation
     const basicText = new RegExp("[a-zA-Z]+")
     const phoneNumber = new RegExp("^([0-9]{11})$")
 
+    // initial state for the checkout button
     let isDisabled = ref(true)
 
+    // calculates the total cost of all lessons in the basket
     function calculateTotal(){
         let total = 0
         for(let obj of props.basket){
@@ -30,10 +36,11 @@
         }
         return total
     }
+    // informs the parent component when a item is removed as well as the item that was removed
     function emitSignal(name){
         emit('basketRemoveItem', name)
     }
-
+    // strips unneeded properties from items in the basket
     function stripBasket(){
         let strippedBask = []
         for(let item of props.basket){
@@ -46,23 +53,24 @@
         }
         return strippedBask
     }
-
+    // submits the user's order
     async function submitOrder(){
         let success = false
-
+        // constructs order object that will be stored in the database
         const order = {
             name: userInformation.name,
             phoneNumber: userInformation.phoneNumber,
             orders: stripBasket()
         }
         try{
+            // posts order information to the back end
             const response = await fetch("https://cst3144-cw-express.onrender.com/order", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(order)
             })
             const data = await response.json()
-            console.log(data)
+            // if the order was placed successfully then this information is returned
             if(data.status.value){
                 success = true
                 return success
@@ -72,14 +80,15 @@
         }
         return success
     }
-
+    // updates the properties of lessons in the database with new properties
     async function updateLesson(){
         let lessonSimple = []
+        // calculates the updated number of slots for each lesson in the basket and stores them in an object
         for(let obj of props.basket){
             let i = {lessonId: obj.lessonId, property: {type: ["availableSlots", "maxSlots"], value: [(obj.maxSlots - obj.qty), (obj.maxSlots - obj.qty)]}}
             lessonSimple.push(i)
         }
-        console.log(lessonSimple)
+        // makes a fetch to the backend with the formatted data
         try{
             const response = await fetch("https://cst3144-cw-express.onrender.com/update", {
                 method: "PUT",
@@ -87,49 +96,54 @@
                 body: JSON.stringify(lessonSimple)
             })
             const data = await response.json()
-            console.log(data)
         }catch(err){
             if(err){throw err}
         }
         
     }
-
+    // resets the basket and any user input fields
     function resetFields(){
         userInformation.name = ""
         userInformation.phoneNumber = ""
         emit('clearBasket')
     }
-
+    // lets the parent component know to return to the home page
     function backToHomePage(){
         emit('goHome')
     }
-
-    function showConfirmationModal(){
+    // shows confirmation message to the user informing them that the order was successful
+    function showConfirmationModal(title, message){
         const modal = document.getElementById("confirmationModal")
         const modalEl = new bootstrap.Modal(modal)
         modal.addEventListener("hide.bs.modal", ()=>{
             backToHomePage()
         })
-        checkoutStatus.title = "Order placed successfully!"
-        checkoutStatus.message = "Thank you for using the Learning Society!"
+        checkoutStatus.title = title
+        checkoutStatus.message = message
         modalEl.show()
     }
-
+    // submits the order 
     async function submit(){
         let success = await submitOrder()
+        // if the order was placed successfully
         if(success){
-            console.log("RESET")
+            // updates the lessons to reflect the changes made
             await updateLesson()
+            // resets fields
             resetFields()
-            showConfirmationModal()   
+            // shows a confirmation message
+            showConfirmationModal("Order placed successfully.", "Thank you for using the Learning Society!")   
+        }else{
+            // shows error message
+            showConfirmationModal("Error", "Something went wrong!")
         }
         
     }
-
+    // determines if the checkout button should be active or not
     function isValid(){
         isDisabled.value =  !(validation.name && validation.phoneNumber)
     }
-
+    // checks if input string matches input regex
     function validate(testStr, regex, idx){
         let value = regex.test(testStr)
         validation[idx] = value
