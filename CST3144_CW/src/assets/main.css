@@ -44,6 +44,9 @@
 .basketPage{
   height: 70vh;
 }
+.basketPageRow{
+  height: 100vh;
+}
 .basketItem{
   max-width: 100%;
 }
@@ -71,5 +74,5 @@
   display: none;
 }
 .footer{
-  height: 50vh;
+  height: 30vh;
 }

@@ -44,7 +44,7 @@
 
 <template>
   <div class="container-fluid bg-light text-dark mx-0 my-0">
-    <div class="row">
+    <div class="row p-0">
       <Navbar
         :pageState="pageState"
         :basketCount="basketCount"

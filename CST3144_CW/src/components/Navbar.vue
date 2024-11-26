@@ -11,6 +11,15 @@
         return props.basketCount + " Cart"
       }
     }
+    function getNavIcon(){
+      let pageState = props.pageState
+      if(pageState.isCheckout){
+        return "fa fa-home"
+      }
+      if(pageState.isHomePage){
+        return "fa fa-shopping-cart"
+      }
+    }
     function isDisabled(){
       return dataManager.basketCount <= 0 && props.pageState.isCheckout == false
     }
@@ -25,7 +34,7 @@
 <template>
     <div class="col-12 navbar px-3">
         <button class="rounded btn btn-light navButton p-0" @click="swap()" :disabled="isDisabled()">
-            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            <i :class="getNavIcon()" aria-hidden="true"></i>
             {{ getPageButton() }}
         </button>
     </div>
