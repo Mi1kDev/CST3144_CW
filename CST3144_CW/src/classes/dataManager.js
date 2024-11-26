@@ -9,6 +9,7 @@ export default class DataManager{
         this.productList = []
         this.basket = {}
         this.basketCount = 0
+        this.searchTerm = ""
         this.sortTypes = {
             name: 2,
             location: 4,
@@ -132,5 +133,12 @@ export default class DataManager{
     removeFromBasket(item){
         delete this.basket[item.name]
         return this.basket
+    }
+    // returns stored searchTerm
+    getSearchTerm(){
+        return this.searchTerm
+    }
+    setSearchTerm(term){
+        this.searchTerm = term
     }
 }

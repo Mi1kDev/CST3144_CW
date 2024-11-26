@@ -6,7 +6,7 @@
     const emit = defineEmits(['found'])
     // get a reference to the dataManager
     const dataManager = DataManager.getInstance()
-    let searchTerm = ref("")
+    let searchTerm = ref(dataManager.getSearchTerm())
     let isReqActive = false
     // an abort controller attached to prior requests
     let prevController = new AbortController()
@@ -14,6 +14,7 @@
     watch(searchTerm, async(newSearchTerm, oldSearchTerm) =>{
         // if the  search term is different then a search fetch request is made to the back end
         if(newSearchTerm !== oldSearchTerm){
+            dataManager.setSearchTerm(newSearchTerm)
             try{
                 // creates a new abort controller for each request
                 const currentController = new AbortController()
