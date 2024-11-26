@@ -1,5 +1,5 @@
 <template>
-    <div class="burgundy row footer mt-5 p-0 mx-0">
+    <div class="burgundy row footer p-0 mx-0">
         <div class="col-4">
         </div>
         <div class="col-4">

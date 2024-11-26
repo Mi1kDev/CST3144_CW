@@ -1,17 +1,22 @@
 <script setup>
+    import DataManager from '@/classes/dataManager.js';
     import BasketItem from './BasketItem.vue';
-    import {ref} from 'vue'
+    import {reactive, ref} from 'vue'
 
-    const emit = defineEmits(['basketRemoveItem'])
-    const  props = defineProps(['basket', 'pageState'])
-    const userInformation = {
+    const emit = defineEmits(['basketRemoveItem', 'clearBasket', 'goHome'])
+    const props = defineProps(['basket', 'pageState'])
+    const userInformation = reactive({
         name: "",
         phoneNumber: "",
-    }
+    })
     const validation = {
         name: false,
         phoneNumber: false,
     }
+    const checkoutStatus = reactive({
+        title: "",
+        message: ""
+    })
 
     const basicText = new RegExp("[a-zA-Z]+")
     const phoneNumber = new RegExp("^([0-9]{11})$")
@@ -71,26 +76,52 @@
     async function updateLesson(){
         let lessonSimple = []
         for(let obj of props.basket){
-            let i = {lessonId: obj.lessonId, property: {type: "availableSlots", value: (obj.maxSlots - obj.qty)}}
+            let i = {lessonId: obj.lessonId, property: {type: ["availableSlots", "maxSlots"], value: [(obj.maxSlots - obj.qty), (obj.maxSlots - obj.qty)]}}
             lessonSimple.push(i)
         }
+        console.log(lessonSimple)
         try{
             const response = await fetch("https://cst3144-cw-express.onrender.com/update", {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
-                mode: "cors",
                 body: JSON.stringify(lessonSimple)
             })
+            const data = await response.json()
+            console.log(data)
         }catch(err){
             if(err){throw err}
         }
         
     }
 
+    function resetFields(){
+        userInformation.name = ""
+        userInformation.phoneNumber = ""
+        emit('clearBasket')
+    }
+
+    function backToHomePage(){
+        emit('goHome')
+    }
+
+    function showConfirmationModal(){
+        const modal = document.getElementById("confirmationModal")
+        const modalEl = new bootstrap.Modal(modal)
+        modal.addEventListener("hide.bs.modal", ()=>{
+            backToHomePage()
+        })
+        checkoutStatus.title = "Order placed successfully!"
+        checkoutStatus.message = "Thank you for using the Learning Society!"
+        modalEl.show()
+    }
+
     async function submit(){
         let success = await submitOrder()
         if(success){
+            console.log("RESET")
             await updateLesson()
+            resetFields()
+            showConfirmationModal()   
         }
         
     }
@@ -108,8 +139,21 @@
 </script>
 <template>
     <div v-if="pageState.isCheckout" class="row basketPageRow m-0 p-0">
-        <div class="col-4 px-3 py-2 off-white mt-3 ms-3 rounded">
-            <div class="overflow-auto basketPage">
+        <div class="modal fade" tabindex="-1" id="confirmationModal" data-bs-backrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ checkoutStatus.title }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{ checkoutStatus.message }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 px-3 py-2 mt-3">
+            <div class="overflow-auto off-white rounded-top p-2 basketPage">
                 <BasketItem
                 v-for="(item, key) in basket"
                 :key="key"
@@ -117,14 +161,26 @@
                 @remove-from-basket="emitSignal"
                 />
             </div>
-            <div class="checkout">
+            <div class="checkout rounded-bottom burgundy text-light">
                 <p>Total: £{{ calculateTotal() }}</p>
             </div>
         </div>
-        <div class="col-7">
-            <input type="text" class="input-group" v-model="userInformation.name" @keyup="validate(userInformation.name, basicText,'name')">
-            <input type="text" class="input-group" v-model="userInformation.phoneNumber" @keyup="validate(userInformation.phoneNumber, phoneNumber,'phoneNumber')">
-            <button class="btn btn-success" @click="submit()" :disabled="isDisabled">Checkout</button>
+        <div class="col-8 mt-3 checkoutSect h-100">
+            <div class="w-100 h-100 d-flex flex-column flex-grow-1 justify-content-center align-items-center mx-auto">
+                <div class="checkoutInput w-75 h-75 d-flex flex-column justify-content-center p-5 text-light border border-3 border-white checkoutContainer">
+                    <h3>Please enter details to place your order.</h3>
+                    <div>
+                        <label for="userName" class="form-label">Name</label>
+                        <input id="userName" type="text" class="form-control" v-model="userInformation.name" @keyup="validate(userInformation.name, basicText,'name')">
+                    </div>
+                    <div>
+                        <label for="phoneNum" class="form-label">Phone Number</label>
+                        <input id="phoneNum" type="number" class="form-control" v-model="userInformation.phoneNumber" @keyup="validate(userInformation.phoneNumber, phoneNumber,'phoneNumber')">
+                    </div>
+                    <button class="btn btn-success" @click="submit()" :disabled="isDisabled">Checkout</button>
+                </div>
+            </div>
+              
         </div>  
     </div>
 </template>

@@ -17,7 +17,6 @@
     }
 
     function getItemQty(item){
-        console.log(item.qty)
         return item.qty
     }
 </script>

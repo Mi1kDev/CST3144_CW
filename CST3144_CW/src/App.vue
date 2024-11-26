@@ -30,7 +30,7 @@
     dataManager.basketCount--
     basketCount.value = dataManager.getBasketCount()
     dataManager.basket[dataManager.productList[idx].name].qty--
-    if(dataManager.productList[idx].availableSlots >= dataManager.productList[idx].maxSlots /*Upper limit of slots */){
+    if(dataManager.productList[idx].availableSlots >= dataManager.productList[idx].maxSlots){
       let tempBask = dataManager.removeFromBasket(dataManager.productList[idx])
       basket.value = []
       for(let key of Object.keys(tempBask)){
@@ -39,6 +39,18 @@
       }
     }
   }  
+
+  function clearBasket(){
+    basket.value = []
+    dataManager.basket = {}
+    dataManager.basketCount = 0
+    basketCount.value = 0
+  }
+
+  function togglePage(){
+    pageState.isCheckout = !pageState.isCheckout
+    pageState.isHomePage = !pageState.isHomePage
+  }
 
 </script>
 
@@ -53,6 +65,8 @@
         :basket="basket"
         :pageState="pageState"
         @basket-remove-item="removeFromBasket"
+        @clearBasket="clearBasket"
+        @goHome="togglePage"
       />
       <LessonPage
         :pageState="pageState"

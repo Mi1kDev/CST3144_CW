@@ -51,10 +51,12 @@
   })
 
   function updateLessonInformation(){
-    console.log("Update")
     sortedList.value = []
     let tempList = dataManager.sort(sortVal.value, ascending.value)
     for(let obj of tempList){
+      if(obj.name in dataManager.basket){
+        obj.availableSlots -= dataManager.basket[obj.name].qty
+      }
       sortedList.value.push(obj)
     }
   }
@@ -82,7 +84,7 @@
             v-model:sortVal="sortVal"
           />
         </div>
-        <div class="lessonGrid mt-3 mx-4 overflow-y off-white px-5 py-3 rounded-3 border border-1 border-dark">
+        <div class="lessonGrid mt-3 mx-4 overflow-y off-white px-5 py-3 rounded-3 border border-1 border-dark mb-3">
           <LessonItem
             v-for="(item, index) in sortedList"
             :item="item"

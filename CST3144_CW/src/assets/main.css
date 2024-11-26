@@ -76,3 +76,25 @@
 .footer{
   height: 30vh;
 }
+.checkoutSect{
+  background-image: url(https://cer.co.uk/wp-content/uploads/2024/05/2149272223.jpg); 
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.basketList{
+  height: 90vh;
+}
+.checkoutContainer{
+  background-color: rgba(0, 0, 0, 0.697);
+  backdrop-filter: blur(4px);
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number]{
+  -moz-appearance: textfield;
+}
